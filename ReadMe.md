@@ -1,5 +1,6 @@
 ## My react learning stuffs
 * todomvc
+* and more...
 
 ## clone
 ``` bash
