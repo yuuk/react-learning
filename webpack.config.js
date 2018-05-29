@@ -1,10 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
-const webpack = require("webpack");
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 获取入口文件
 const getEntries = () => {
@@ -21,12 +22,12 @@ const generatorHtmlWebPackPlugin = () => {
     let html = [];
     glob.sync('src/*/index.html').forEach(entry => {
         let filename =  entry.split('/')[1];
-        var instance = new HtmlWebPackPlugin({
+        let instance = new HtmlWebPackPlugin({
             template: entry, // 指定模板文件
             filename: `${filename}/index.html`, // 输出的文件名
             hash: false, // 如果 【output】 选项中指定了hash，此处可配置成false
-            minify: false,
-            inject: true
+            inject: true,
+            chunks: [filename]
         });
         html.push(instance);
     });
@@ -34,9 +35,13 @@ const generatorHtmlWebPackPlugin = () => {
 }
 
 const webpackPlugins = [
+    // 提取css成文件
+    new ExtractTextPlugin({
+        filename: '[name]/css/index.[hash].css',
+        allChunks: true
+    }),
     new CleanWebpackPlugin(['./dist/']) // 打包文件前清除dist目录
-].concat(generatorHtmlWebPackPlugin ());
-
+].concat(generatorHtmlWebPackPlugin());
 
 const config = {
     mode: 'production',
@@ -56,13 +61,21 @@ const config = {
             }
         }, {
             test: /\.(css|less)$/,
-            use: [{
-                loader: 'style-loader'
-            }, {
-                loader: 'css-loader'
-            }, {
-                loader: 'less-loader'
-            }]
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: [{
+                    loader: "css-loader",
+                    options: {
+                        minimize: true
+                    }
+                }, {
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
+                }]
+               
+            })
         }, {
             test: /\.html$/,
             use: [{

@@ -1,12 +1,13 @@
 {
-	"name": "react-music-app",
+	"name": "react-learning",
 	"version": "1.0.0",
-	"description": "",
+	"description": "my react learning",
 	"main": "index.js",
 	"scripts": {
 		"dev": "webpack --mode development",
 		"build": "webpack --mode production",
-		"watch": "webpack-dev-server --mode development --watch"
+		"watch": "webpack-dev-server --mode development --watch",
+		"test": ""
 	},
 	"author": "",
 	"license": "ISC",
@@ -17,12 +18,14 @@
 		"babel-preset-react": "^6.24.1",
 		"clean-webpack-plugin": "^0.1.19",
 		"css-loader": "^0.28.11",
+		"extract-text-webpack-plugin": "^4.0.0-beta.0",
 		"file-loader": "^1.1.11",
 		"glob": "^7.1.2",
 		"html-loader": "^0.5.5",
 		"html-webpack-plugin": "^3.2.0",
 		"less": "^3.0.4",
 		"less-loader": "^4.1.0",
+		"prop-types": "^15.6.1",
 		"sass-loader": "^7.0.1",
 		"style-loader": "^0.21.0",
 		"uglifyjs-webpack-plugin": "^1.2.5",
