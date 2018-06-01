@@ -67,11 +67,18 @@
     &-body {
         background-color: #fafafa;min-height: 1000px;
         &-skill {
+            padding: 30px 20px;
+            .progress {
+                padding: 40px 20px 0;
+                display: flex;
+                flex-wrap: wrap;
+                align-content: space-between;
+                justify-content: center;
+            }
             .desc {
-                padding: 40px 20px 0;font-size: 16px;color: #333;
+                padding: 30px 20px 0;font-size: 16px;color: #333;
                 p {line-height: 2;margin-bottom: 5px;}
             }
-            padding: 30px 20px;
         }
         &-case {
             padding: 10px 20px 0;
@@ -123,5 +130,19 @@
     &-footer {
         width: 1000px;padding:15px;background-color:#39F;border-bottom-left-radius:5px;border-bottom-right-radius:5px;
         p {font-size: 14px;line-height: 1.5;color:#eee;text-align:center;}
+    }
+}
+
+.progress-item {
+    width: 120px; height: 120px; font-size: 18px;position: relative;margin: 0  15px;cursor: pointer;
+    &:hover {
+        .value {display: block;}
+        .type {display: none;}
+    }
+    &-text {
+        display: block;position: absolute;width: 100%;text-align: center;
+        line-height: 1;top: 50%;transform: translateY(-50%);left: 0;
+        .value {display: none;}
+        .type {display: block;}
     }
 }

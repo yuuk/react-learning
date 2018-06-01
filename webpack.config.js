@@ -7,6 +7,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+
 // 获取入口文件
 const getEntries = () => {
     let obj = {};
@@ -43,85 +44,94 @@ const webpackPlugins = [
     new CleanWebpackPlugin(['./dist/']) // 打包文件前清除dist目录
 ].concat(generatorHtmlWebPackPlugin());
 
-const config = {
-    mode: 'production',
-    entry: getEntries(),
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name]/js/index.[hash].js'
-    },
-    module: {
-        rules: [{
-            test: /\.(js|jsx)$/,
-            include: [
-                path.resolve(__dirname, 'src')
-            ],
-            use: {
-                loader: 'babel-loader'
-            }
-        }, {
-            test: /\.(css|less)$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
+const config = (options) => {
+    let mode = options.mode;
+    return {
+        entry: getEntries(),
+        output: {
+            path: path.resolve(__dirname, 'dist'),
+            filename: '[name]/js/index.[hash].js'
+        },
+        module: {
+            rules: [{
+                test: /\.(js|jsx)$/,
+                include: [
+                    path.resolve(__dirname, 'src')
+                ],
+                use: {
+                    loader: 'babel-loader'
+                }
+            }, {
+                test: /\.(css|less)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [{
+                        loader: "css-loader",
+                        options: {
+                            minimize: true
+                        }
+                    }, {
+                        loader: "less-loader",
+                        options: {
+                            javascriptEnabled: true
+                        }
+                    }]
+                
+                })
+            }, {
+                test: /\.html$/,
                 use: [{
-                    loader: "css-loader",
+                    loader: "html-loader",
                     options: {
                         minimize: true
                     }
-                }, {
-                    loader: "less-loader",
-                    options: {
-                        javascriptEnabled: true
-                    }
                 }]
-               
-            })
-        }, {
-            test: /\.html$/,
-            use: [{
-                loader: "html-loader",
-                options: {
-                    minimize: true
-                }
+            }, {
+                test: /\.(png|jpg|gif)$/,
+                use: [{
+                    loader: 'url-loader',
+                    options: {
+                        limit: 8192,
+                        name: '[path][name].[hash].[ext]',
+                        publicPath (url) {
+                            return mode == 'production' ? url.replace(/src\/\w+\//, './') : url;
+                        },
+                        outputPath (url) {
+                            return mode == 'production' ? url.replace('src', '') : url;
+                        }
+                    }       
+                }]
             }]
-        }, {
-            test: /\.(png|jpg|gif)$/,
-            use: [{
-                loader: 'url-loader',
-                options: {
-                    limit: 8192,
-                    name: '[name].[hash].[ext]',
-                    outputPath: 'images' 
-                }       
-            }]
-        }]
-    },
-    plugins: webpackPlugins,
-    // 只会在production环境下起作用
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    warnings: false,
-                    ecma: 5,
-                    mangle: {
-                        keep_classnames: true,
-                        keep_fnames: true
-                    },
-                    output: {
-                        comments: false, // 去除代码注释
-                        beautify: false
+        },
+        plugins: webpackPlugins,
+        // 只会在production环境下起作用
+        optimization: {
+            minimizer: [
+                new UglifyJsPlugin({
+                    uglifyOptions: {
+                        warnings: false,
+                        ecma: 5,
+                        mangle: {
+                            keep_classnames: true,
+                            keep_fnames: true
+                        },
+                        output: {
+                            comments: false, // 去除代码注释
+                            beautify: false
+                        }
                     }
-                }
-            })
-        ]
-    },
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        disableHostCheck: true,
-        compress: true,
-        port: 9000
+                })
+            ]
+        },
+        devServer: {
+            contentBase: path.resolve(__dirname, 'dist'),
+            disableHostCheck: true,
+            compress: true,
+            port: 9000
+        }
     }
 }
 
-module.exports = config;
+module.exports = (env, options) => {
+    return config(options);
+}
