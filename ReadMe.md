@@ -1,5 +1,7 @@
 ## My react learning stuffs
 * todomvc
+* resume
+* todomvc with redux
 * and more...
 
 ## clone
