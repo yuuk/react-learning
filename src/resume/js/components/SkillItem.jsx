@@ -23,7 +23,7 @@ class Skill extends Component {
 
 Skill.propTypes = {
     color: PropTypes.string,
-    value: PropTypes.number
+    value: PropTypes.string
 }
 
 export default Skill

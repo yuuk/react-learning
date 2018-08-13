@@ -68,6 +68,7 @@ const config = (options) => {
                     use: [{
                         loader: "css-loader",
                         options: {
+                            modules: true,
                             minimize: true
                         }
                     }, {

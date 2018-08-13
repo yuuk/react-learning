@@ -1,0 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:global {
+    #root {
+        padding: 15px;
+    }
+}
+
+.item {
+    border: 1px dashed gray;
+    background-color: white;
+    margin-right: 15px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    float: left;
+    cursor: move;
+    &.dragging {
+        opacity: .4;
+    }
+}
+
+.area {
+    width: 500px;
+    height: 300px;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 300px;
+    margin-bottom: 15px;
+    background-color: #333;
+    &.active {
+        background-color: #f00;
+    }
+    &.canDrop {
+        border: 2px dashed #f00;
+    }
+}
