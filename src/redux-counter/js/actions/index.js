@@ -1,15 +1,17 @@
 export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
 
-export const increment = () => {
+export const increment = (payload) => {
     return {
-        type: INCREMENT_COUNTER
+        type: INCREMENT_COUNTER,
+        payload
     };
 }
 
-export const decrement = () => {
+export const decrement = (payload) => {
     return {
-        type: DECREMENT_COUNTER
+        type: DECREMENT_COUNTER,
+        payload
     };
 }
 

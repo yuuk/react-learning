@@ -1,0 +1,13 @@
+.dragItem {
+  width: 100px;height: 100px;background: #666;display: inline-block;
+  color: #fff;text-align: center;line-height: 100px;border-radius: 5px;
+  margin: 5px;cursor: pointer;border: 3px solid transparent;
+  align-items: center;display: flex;justify-content: center;
+  img {width: 50px;height: 50px;}
+  &.dragging {
+    opacity: .4;
+  }
+  &.dragOver {
+    border: 3px dashed #000;
+  }
+}
