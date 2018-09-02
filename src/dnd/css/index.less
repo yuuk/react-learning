@@ -10,14 +10,26 @@
     }
 }
 
+.container {
+    width: 600px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.list {
+    width: 100%;
+    margin: 10px;
+}
+
 .item {
     border: 1px dashed gray;
     background-color: white;
-    margin-right: 15px;
     height: 40px;
     line-height: 40px;
     padding: 0 15px;
-    float: left;
+    margin: 5px 0;
     cursor: move;
     &.dragging {
         opacity: .4;
