@@ -69,7 +69,8 @@ const config = (options) => {
                         loader: "css-loader",
                         options: {
                             modules: true,
-                            minimize: true
+                            minimize: true,
+                            localIdentName: '[name]__[local]--[hash:base64:5]'
                         }
                     }, {
                         loader: "less-loader",

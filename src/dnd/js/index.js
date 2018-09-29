@@ -1,105 +1,78 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import * as Immutable from 'immutable';
-import List from "./List";
+import { DropTarget, DragDropContext, ConnectDropTarget } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import Card from './Card';
 import styles from "../css/index.less";
 
+const update = require('immutability-helper');
 
+const cardTarget = {
+	drop() {
+		//
+	},
+}
 
 @DragDropContext(HTML5Backend)
+
+@DropTarget('CARD', cardTarget, connect => ({
+	connectDropTarget: connect.dropTarget(),
+}))
+
 class App extends Component {
-  state = {
-    lists: [
-      [
-        {
-          id: 1,
-          content: "2018中国500强"
-        },
-        {
-          id: 2,
-          content: "夺冠后连夜返京"
-        },
-        {
-          id: 3,
-          content: "森碟清华留影"
-        },
-        {
-          id: 4,
-          content: "霍格沃茨开学"
-        },
-        {
-          id: 5,
-          content: "朱婷砸得地板疼"
-        }
-      ],
-      [
-        {
-          id: 6,
-          content: "教育部开学第一课"
-        },
-        {
-          id: 7,
-          content: "多国联军误炸客车"
-        },
-        {
-          id: 8,
-          content: "ofo回应收购"
-        },
-        {
-          id: 9,
-          content: "亚运闭幕旗手郭丹"
-        },
-        {
-          id: 10,
-          content: "于海明属正当防卫"
-        }
-      ]
-    ]
-  };
 
-  moveItem = ({ targetProps, sourceProps }) => {
-    const { lists } = this.state;
+  state={
+    items: [{
+      id: 1,
+      content: 'item one'
+    }, {
+      id: 2,
+      content: 'item two'
+    }, {
+      id: 3,
+      content: 'item three'
+    }],
+  }
 
-    const ImmutableLists = Immutable.fromJS(lists);
-    
-    const targetIndex = targetProps.index;
-    const targetData = targetProps.data;
-    const targetListId = targetProps.listId;
+  moveCard = (id, atIndex) => {
+		const { card, index } = this.findCard(id)
+		this.setState(
+			update(this.state, {
+				items: {
+					$splice: [[index, 1], [atIndex, 0, card]],
+				},
+			}),
+		)
+	}
 
-    const sourceIndex = sourceProps.index;
-    const sourceData = sourceProps.data;
-    const sourceListId = sourceProps.listId;
-
-    // 跨容器拖拽
-    if (targetListId !== sourceListId) {
-      return [];
-    }
-
-    const newLists = ImmutableLists.setIn([targetListId, targetIndex], sourceData).setIn([sourceListId, sourceIndex], targetData);
-
-
-    this.setState({
-      lists: newLists.toJS()
-    })
-
-  };
+	findCard = (id) => {
+		const { items } = this.state;
+		const card = items.filter(c => c.id === id)[0];
+		return {
+			card,
+			index: items.indexOf(card),
+		}
+	}
 
   render() {
-    const { lists } = this.state;
-
-    console.log(lists);
-    
-    return (
-      <div className={styles.container}>
-        {
-          lists.map((list, i) => (
-            <List key={i} listId={i} data={list} moveItem={this.moveItem} />
-          ))
-        }
-      </div>
-    );
+    const { connectDropTarget } = this.props
+		const { items } = this.state
+		return (
+			connectDropTarget &&
+			connectDropTarget(
+				<div className={styles.container}>
+					{items.map(card => (
+						<Card
+							key={card.id}
+							id={card.id}
+              text={card.content}
+              moveCard={this.moveCard}
+							findCard={this.findCard}
+						/>
+					))}
+				</div>,
+			)
+		)
   }
 }
 
