@@ -7,7 +7,6 @@ import List from "./List";
 import styles from "../css/index.less";
 
 
-
 @DragDropContext(HTML5Backend)
 class App extends Component {
   state = {
