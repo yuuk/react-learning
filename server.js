@@ -9,7 +9,7 @@ const PORT = 8888;
 const app = express();
 
 const delayMiddleware = (req, res, next) => {
-	setTimeout(next, 2000)
+	setTimeout(next, 1000)
 };
 const allowCrossDomain = (req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -25,7 +25,7 @@ app.use(delayMiddleware);
 
 
 app.post('/api/upload/', (req, res) => {
-	const upload = multer({ dest:'upload/' }).any();
+	const upload = multer({ dest:'uploads/' }).any();
 
 	upload(req, res, function (err) {
     //添加错误处理
