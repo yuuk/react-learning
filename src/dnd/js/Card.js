@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import classnames from 'classnames';
 import {
 	DragSource,
 	DropTarget,
@@ -10,19 +11,18 @@ const cardSource = {
 	beginDrag(props) {
 		return {
 			id: props.id,
-			originalIndex: props.findCard(props.id).index,
+			index: props.findCard(props.id).index,
 		}
 	},
 
 	endDrag(props, monitor) {
 		const {
-			id: droppedId,
-			originalIndex
+			id,
+			index
 		} = monitor.getItem()
-		const didDrop = monitor.didDrop()
-
+		const didDrop = monitor.didDrop();
 		if (!didDrop) {
-			props.moveCard(droppedId, originalIndex)
+			props.moveCard(id, index)
 		}
 	},
 }
@@ -33,11 +33,17 @@ const cardTarget = {
 	},
 
 	hover(props, monitor) {
-		const { id: draggedId } = monitor.getItem()
-		const { id: overId } = props
+		const {
+			id: draggedId
+		} = monitor.getItem()
+		const {
+			id: overId
+		} = props
 
 		if (draggedId !== overId) {
-			const { index: overIndex } = props.findCard(overId)
+			const {
+				index: overIndex
+			} = props.findCard(overId)
 			props.moveCard(draggedId, overIndex)
 		}
 	},
@@ -59,13 +65,15 @@ export default class Card extends React.Component {
 			connectDropTarget,
 		} = this.props
 
-		const opacity = isDragging ? 0 : 1
+		const cls = classnames(styles.item, {
+			[styles.isDragging]: isDragging,
+		})
 
 		return (
-			connectDragSource &&
-			connectDropTarget &&
 			connectDragSource(
-				connectDropTarget(<div className={styles.item} style={{ opacity }}>{text}</div>),
+				connectDropTarget(
+					<div className={cls}> {text} </div>
+				)
 			)
 		)
 	}

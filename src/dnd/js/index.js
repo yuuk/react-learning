@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { DropTarget, DragDropContext, ConnectDropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
+
 import Card from './Card';
 import styles from "../css/index.less";
-
-const update = require('immutability-helper');
 
 const cardTarget = {
 	drop() {
@@ -14,7 +14,6 @@ const cardTarget = {
 }
 
 @DragDropContext(HTML5Backend)
-
 @DropTarget('CARD', cardTarget, connect => ({
 	connectDropTarget: connect.dropTarget(),
 }))
@@ -22,7 +21,7 @@ const cardTarget = {
 class App extends Component {
 
   state={
-    items: [{
+    listOne: [{
       id: 1,
       content: 'item one'
     }, {
@@ -35,33 +34,37 @@ class App extends Component {
   }
 
   moveCard = (id, atIndex) => {
-		const { card, index } = this.findCard(id)
+		const { card, index } = this.findCard(id);
+		console.log(index); // source index
 		this.setState(
 			update(this.state, {
-				items: {
+				listOne: {
 					$splice: [[index, 1], [atIndex, 0, card]],
 				},
 			}),
 		)
+
+		console.table(this.state.listOne);
 	}
 
 	findCard = (id) => {
-		const { items } = this.state;
-		const card = items.filter(c => c.id === id)[0];
+		const { listOne } = this.state;
+		const card = listOne.find(item => item.id === id);
+		const index = listOne.findIndex(item => item.id === id);
 		return {
 			card,
-			index: items.indexOf(card),
+			index,
 		}
 	}
 
   render() {
     const { connectDropTarget } = this.props
-		const { items } = this.state
+		const { listOne } = this.state
 		return (
 			connectDropTarget &&
 			connectDropTarget(
 				<div className={styles.container}>
-					{items.map(card => (
+					{listOne.map(card => (
 						<Card
 							key={card.id}
 							id={card.id}
