@@ -1,80 +1,87 @@
-import React from 'react';
-import classnames from 'classnames';
-import {
-	DragSource,
-	DropTarget,
-} from 'react-dnd';
+import React from "react";
+import { findDOMNode } from 'react-dom';
+import classnames from "classnames";
+import { DragSource, DropTarget } from "react-dnd";
 
 import styles from "../css/index.less";
 
 const cardSource = {
-	beginDrag(props) {
-		return {
-			id: props.id,
-			index: props.findCard(props.id).index,
-		}
+ 
+	beginDrag(props) {		
+		return {			
+			index: props.index,
+			listId: props.listId,
+			card: props.card
+		};
 	},
 
-	endDrag(props, monitor) {
-		const {
-			id,
-			index
-		} = monitor.getItem()
-		const didDrop = monitor.didDrop();
-		if (!didDrop) {
-			props.moveCard(id, index)
-		}
-	},
-}
+	isDragging(props, monitor) {
+    return props.card.id === monitor.getItem().card.id;
+  },
+};
 
 const cardTarget = {
-	canDrop() {
-		return false
-	},
+	hover(props, monitor, component) {
 
-	hover(props, monitor) {
-		const {
-			id: draggedId
-		} = monitor.getItem()
-		const {
-			id: overId
-		} = props
+		const dragIndex = monitor.getItem().index;
+		const dragId = monitor.getItem().card.id;
 
-		if (draggedId !== overId) {
-			const {
-				index: overIndex
-			} = props.findCard(overId)
-			props.moveCard(draggedId, overIndex)
+		const hoverIndex = props.index;
+		const hoverId = props.card.id;
+
+		const dragListId = monitor.getItem().listId;
+		const hoverListId = props.listId;
+
+		// 相同元素上拖拽不作处理
+		if (dragId === hoverId) {
+			return;
 		}
-	},
-}
 
-@DropTarget('CARD', cardTarget, connect => ({
-	connectDropTarget: connect.dropTarget(),
+		// console.log('hover:', props);
+		// console.log('drag:', monitor.getItem());
+ 
+		if ( hoverListId === dragListId ) { 	// 同容器间拖拽
+			props.moveCard(dragIndex, hoverIndex, dragId, hoverId);
+			// Note: we're mutating the monitor item here!
+			// Generally it's better to avoid mutations,
+			// but it's good here for the sake of performance
+			// to avoid expensive index searches.
+			monitor.getItem().index = hoverIndex;
+		} else { // 跨容器拖拽
+			props.exchangeCard(
+				dragIndex,
+				hoverIndex,
+				dragId,
+				hoverId,
+				dragListId,
+				hoverListId,
+			);
+		}
+	}
+};
+
+@DropTarget("CARD", cardTarget, connect => ({
+  connectDropTarget: connect.dropTarget()
 }))
-@DragSource('CARD', cardSource, (connect, monitor) => ({
-	connectDragSource: connect.dragSource(),
-	isDragging: monitor.isDragging(),
+@DragSource("CARD", cardSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
 }))
 export default class Card extends React.Component {
-	render() {
-		const {
-			text,
-			isDragging,
-			connectDragSource,
-			connectDropTarget,
-		} = this.props
+  render() {
+    const {
+      card,
+      isDragging,
+      connectDragSource,
+      connectDropTarget
+    } = this.props;
 
-		const cls = classnames(styles.item, {
-			[styles.isDragging]: isDragging,
-		})
+    const cls = classnames(styles.item, {
+      [styles.isDragging]: isDragging
+    });
 
-		return (
-			connectDragSource(
-				connectDropTarget(
-					<div className={cls}> {text} </div>
-				)
-			)
-		)
-	}
+    return connectDragSource(
+      connectDropTarget(<div className={cls}> {card.text} </div>)
+    );
+  }
 }
