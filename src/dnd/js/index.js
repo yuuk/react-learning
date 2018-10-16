@@ -40,18 +40,16 @@ class App extends Component {
 		const dragCard = dragList.data[dragIndex];
 
 		if (hoverListId === dragListId) { 	// 同容器间拖拽
-			console.log('同容器');
+			console.log(dragList.data);
+			const newData = update(dragList.data, {
+				$splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
+			});
+			console.log(newData);
 		} else { // 跨容器间拖拽
 			console.log('跨容器');
 		}
 
-		// this.setState(
-    //   update(this.state, {
-    //     lists: {
-    //       $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
-    //     }
-    //   })
-    // );
+		
   }
 
   render() {
