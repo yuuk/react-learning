@@ -39,24 +39,20 @@ const cardTarget = {
 
 		// console.log('hover:', props);
 		// console.log('drag:', monitor.getItem());
- 
-		if ( hoverListId === dragListId ) { 	// 同容器间拖拽
-			props.moveCard(dragIndex, hoverIndex, dragId, hoverId);
-			// Note: we're mutating the monitor item here!
-			// Generally it's better to avoid mutations,
-			// but it's good here for the sake of performance
-			// to avoid expensive index searches.
-			monitor.getItem().index = hoverIndex;
-		} else { // 跨容器拖拽
-			props.exchangeCard(
-				dragIndex,
-				hoverIndex,
-				dragId,
-				hoverId,
-				dragListId,
-				hoverListId,
-			);
-		}
+
+		props.moveCard(
+			dragIndex,
+			hoverIndex,
+			dragId,
+			hoverId,
+			dragListId,
+			hoverListId,
+		);
+		// Note: we're mutating the monitor item here!
+		// Generally it's better to avoid mutations,
+		// but it's good here for the sake of performance
+		// to avoid expensive index searches.
+		monitor.getItem().index = hoverIndex;
 	}
 };
 
