@@ -26,30 +26,43 @@ class App extends Component {
 			]
 		}]
 	}
-	
+
   moveCard = (
 		dragIndex,
 		hoverIndex,
 		dragId,
 		hoverId,
 		dragListId,
-		hoverListId,
+    hoverListId,
 	) => {
-		const { lists } = this.state;
-		const dragList = lists.find(list => list.id === dragListId);
-		const dragCard = dragList.data[dragIndex];
+    const { lists } = this.state;
+    const LEFT = lists[0];
+    const RIGHT = lists[1];
+    const dragList = lists.find(list => list.id === dragListId);
+    const dragCard = dragList.data.find(card => card.id === dragId);
+
+    const hoverList = lists.find(list => list.id === hoverListId);
+
+
+    console.log(dragList, hoverList);
 
 		if (hoverListId === dragListId) { 	// 同容器间拖拽
-			console.log(dragList.data);
-			const newData = update(dragList.data, {
-				$splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
-			});
-			console.log(newData);
+      // this.setState({
+      //   lists: [
+      //     {
+      //       id: dragListId,
+      //       data: update(dragList.data, {
+      //         $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]]
+      //       }),
+      //     },
+      //     RIGHT
+      //   ]
+      // })
 		} else { // 跨容器间拖拽
 			console.log('跨容器');
 		}
 
-		
+
   }
 
   render() {
@@ -57,9 +70,10 @@ class App extends Component {
 		return (
 			<div className={styles.container}>
 				{
-					lists.map(list => {
+					lists.map((list, index) => {
 						return(
 							<List
+                index={index}
 								key={list.id}
 								id={list.id}
 								data={list.data}

@@ -6,9 +6,10 @@ import styles from "../css/index.less";
 
 const cardTarget = {
 	drop(props, monitor, component ) {
-		const { id } = props;
+		const { id: listId, index } = props;
 		return {
-			listId: id
+      index,
+			listId
 		};
 	}
 }
@@ -22,6 +23,7 @@ class List extends React.Component {
 
   render() {
     const {
+      index,
 			id,
 			data,
 			moveCard,
@@ -31,7 +33,7 @@ class List extends React.Component {
 			isOver,
       connectDropTarget
 		} = this.props;
-		
+
 		const cls = classnames(styles.list, {
 			[styles.listActive]: canDrop && isOver,
 		})
@@ -41,11 +43,11 @@ class List extends React.Component {
 				<div className={cls}>
 					{data.map((card, index) => {
 						return (
-							<Card 
+							<Card
 								key={card.id}
 								index={index}
 								card={card}
-								listId={id}
+                listId={id}
 								moveCard={moveCard}
 								exchangeCard={exchangeCard}
 							/>
@@ -58,4 +60,4 @@ class List extends React.Component {
 }
 
 
-export default List; 
+export default List;

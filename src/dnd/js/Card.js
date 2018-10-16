@@ -6,9 +6,9 @@ import { DragSource, DropTarget } from "react-dnd";
 import styles from "../css/index.less";
 
 const cardSource = {
- 
-	beginDrag(props) {		
-		return {			
+
+	beginDrag(props) {
+		return {
 			index: props.index,
 			listId: props.listId,
 			card: props.card
@@ -24,13 +24,13 @@ const cardTarget = {
 	hover(props, monitor, component) {
 
 		const dragIndex = monitor.getItem().index;
-		const dragId = monitor.getItem().card.id;
+    const dragId = monitor.getItem().card.id;
 
 		const hoverIndex = props.index;
 		const hoverId = props.card.id;
 
 		const dragListId = monitor.getItem().listId;
-		const hoverListId = props.listId;
+    const hoverListId = props.listId;
 
 		// 相同元素上拖拽不作处理
 		if (dragId === hoverId) {
@@ -46,7 +46,7 @@ const cardTarget = {
 			dragId,
 			hoverId,
 			dragListId,
-			hoverListId,
+      hoverListId,
 		);
 		// Note: we're mutating the monitor item here!
 		// Generally it's better to avoid mutations,
