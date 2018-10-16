@@ -1,6 +1,9 @@
 import React, { Component, Children } from "react";
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import styles from "../css/index.less";
+
+console.log(classnames);
 
 
 class Tab extends Component {
@@ -21,16 +24,17 @@ class Tab extends Component {
 
   render() {
     const { activeTab } = this.state;
-
-    console.log(activeTab)
-
     return (
 			<div className={styles.tabs}>
         <div className={styles.tabHeader}>
         {
             Children.map(this.props.children, (children) =>
               <div
-                className={styles.tabHeaderItem}
+                className={
+                  classnames(styles.tabHeaderItem, {
+                    [styles.tabHeaderActive]: activeTab == children.props.tabid,
+                  })
+                }
                 onClick={e => this.onChange(children.props)}
               >
                 {children.props.title}
@@ -42,7 +46,7 @@ class Tab extends Component {
         <div className={styles.tabBody}>
           {
             Children.map(this.props.children, (children) => {
-              if (activeTab == children.props.tabid ){
+              if (activeTab == children.props.tabid){
                 return children;
               }
             })

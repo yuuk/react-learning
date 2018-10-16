@@ -11,10 +11,10 @@ class App extends Component {
       <div>
         <Tab activeTab="0">
           <div tabid="0" title={<Button>选项卡一</Button>}>
-              <div><span>我是第一个</span></div>
+              <div className={styles.content}><span>我是第一个</span></div>
           </div>
           <div tabid="1" title={<Button>选项卡二</Button>}>
-              <div><span>我是第二个</span></div>
+              <div className={styles.content}><span>我是第二个</span></div>
           </div>
         </Tab>
       </div>
