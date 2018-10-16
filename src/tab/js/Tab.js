@@ -8,46 +8,66 @@ console.log(classnames);
 
 class Tab extends Component {
 
-	
-	state = {
-    activeTab: 0,
+  static propTypes = {
+		defaultActiveTab: PropTypes.string, // 默认选中的 tab
+		onChange: PropTypes.func,  // 文件变化回调函数
   };
   
-  onChange = (props) => {
-    const { tabid } = props;
-    this.setState({
-      activeTab: tabid,
-    })
-  }
-
+  static defaultProps = {
+		defaultActiveTab: undefined,
+		onChange: () => {},
+	}
 	
+	state = {
+    activeTab: this.props.defaultActiveTab,
+  };
+
+  onChange = (props) => {
+    const { id } = props;
+    const { onChange } = this.props;
+    this.setState({
+      activeTab: id,
+    });
+    onChange(id);
+  }
 
   render() {
     const { activeTab } = this.state;
+    const { children } = this.props;
+  
+    // 高亮 tab
+    const isActiveTab = (child, index) => {
+      if (activeTab !== undefined && activeTab === child.props.id) {
+        return true;
+      }
+      // 没有传递默认值，选中第一个 tab
+      if(activeTab === undefined && index === 0) {
+        return true;
+      }
+      return false;
+    }
+
     return (
 			<div className={styles.tabs}>
-        <div className={styles.tabHeader}>
-        {
-            Children.map(this.props.children, (children) =>
-              <div
-                className={
-                  classnames(styles.tabHeaderItem, {
-                    [styles.tabHeaderActive]: activeTab == children.props.tabid,
-                  })
-                }
-                onClick={e => this.onChange(children.props)}
-              >
-                {children.props.title}
-              </div>
-            )
-        }
-
-        </div>
-        <div className={styles.tabBody}>
+        <div className={styles.nav}>
           {
-            Children.map(this.props.children, (children) => {
-              if (activeTab == children.props.tabid){
-                return children;
+              Children.map(children, (child, index) =>
+                <div
+                  className={classnames(styles.navItem, {
+                    [styles.active]: isActiveTab(child, index),
+                  })}
+                  onClick={e => this.onChange(child.props)}
+                >
+                  {child.props.title}
+                </div>
+              )
+          }
+        </div>
+        <div className={styles.body}>
+          {
+            Children.map(children, (child, index) => {
+              if (isActiveTab(child, index)) {
+                return child;
               }
             })
           } 

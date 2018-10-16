@@ -11,15 +11,30 @@
 }
 
 .container {
-    width: 300px;
-    margin: auto;
+    display: flex;
+}
+
+.list {
+    width: 100%;
+    padding: 20px;
+    margin: 0 10px;
+    border: 1px solid #ddd;
+}
+
+.listActive {
+    border-color: #337dbc;
+    background-color: #eee;
 }
 
 .item {
-    border: 1px solid #ccc;
+    border: 1px dashed #ccc;
     background-color: white;
-    border-radius: 4px;
     padding: 10px 15px;
     margin: 10px 0;
     cursor: move;
+}
+
+.isDragging {
+    border-color: #337dbc;
+    background-color: #dbedff;
 }

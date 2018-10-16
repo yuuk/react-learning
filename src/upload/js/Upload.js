@@ -70,6 +70,7 @@ class Upload extends Component {
 	}
 
 	onError = (err) => {
+		this.setState({ uploading: false });
 		message.error('onError', err);
 	}
 

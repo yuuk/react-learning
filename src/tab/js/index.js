@@ -2,20 +2,28 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Button } from 'antd';
 import Tab from './Tab';
+import Pane from './Pane';
 import styles from "../css/index.less";
 
 class App extends Component {
+
+  handleChange = (id) => {
+    console.log(id);
+  }
   
   render() {
     return (
-      <div>
-        <Tab activeTab="0">
-          <div tabid="0" title={<Button>选项卡一</Button>}>
-              <div className={styles.content}><span>我是第一个</span></div>
-          </div>
-          <div tabid="1" title={<Button>选项卡二</Button>}>
-              <div className={styles.content}><span>我是第二个</span></div>
-          </div>
+      <div style={{width: '50%', margin: 'auto'}}>
+        <Tab defaultActiveTab="2" onChange={this.handleChange}>
+          <Pane id="1" title="选项卡1">
+            <div className={styles.content}>我是第1个</div>
+          </Pane>
+          <Pane id="2" title="选项卡2">
+            <div className={styles.content}>我是第2个</div>
+          </Pane>
+          <Pane id="3" title="选项卡3">
+            <div className={styles.content}>我是第3个</div>
+          </Pane>
         </Tab>
       </div>
     );
