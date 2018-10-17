@@ -5,12 +5,9 @@ import Card from "./Card";
 import styles from "../css/index.less";
 
 const cardTarget = {
-	drop(props, monitor, component ) {
-		const { id: listId, index } = props;
-		return {
-      index,
-			listId
-		};
+	hover(props, monitor, component ) {
+		const { listId, index } = props;
+		console.log(props, monitor.getItem());
 	}
 }
 
@@ -21,14 +18,45 @@ const cardTarget = {
 }))
 class List extends React.Component {
 
-  render() {
-    const {
-      index,
-			id,
-			data,
-			moveCard,
-			exchangeCard,
+	state={
+		data: this.props.data,
+	}
 
+	moveCard = (
+		dragIndex,
+		hoverIndex,
+		dragId,
+		hoverId,
+		dragListId,
+    hoverListId,
+	) => {
+		const { data } = this.state;
+		const { allData } = this.props;
+
+		const dragCard = allData.find(card => card.id === dragId);
+		const hoverCard = allData.find(card => card.id === hoverId);
+
+		if (hoverListId === dragListId) { 
+			console.log('同容器拖拽');
+
+			const newData = [...data];
+			newData.splice(hoverIndex, 1, dragCard);
+			newData.splice(dragIndex, 1, hoverCard);
+
+			this.setState({
+				data: [...newData],
+			});
+		} else {
+			console.log('跨容器拖拽');
+		}
+  }
+
+  render() {
+
+		const { data } = this.state;
+
+    const {
+			listId,
 			canDrop,
 			isOver,
       connectDropTarget
@@ -42,16 +70,17 @@ class List extends React.Component {
       connectDropTarget(
 				<div className={cls}>
 					{data.map((card, index) => {
-						return (
-							<Card
-								key={card.id}
-								index={index}
-								card={card}
-                listId={id}
-								moveCard={moveCard}
-								exchangeCard={exchangeCard}
-							/>
-						)
+						if (card) {
+							return (
+								<Card
+									key={card.id}
+									index={index}
+									card={card}
+									listId={listId}
+									moveCard={this.moveCard}
+								/>
+							)
+						}
 					})}
 				</div>
       )

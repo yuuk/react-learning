@@ -30,15 +30,12 @@ const cardTarget = {
 		const hoverId = props.card.id;
 
 		const dragListId = monitor.getItem().listId;
-    const hoverListId = props.listId;
-
+		const hoverListId = props.listId;
+		
 		// 相同元素上拖拽不作处理
 		if (dragId === hoverId) {
 			return;
 		}
-
-		// console.log('hover:', props);
-		// console.log('drag:', monitor.getItem());
 
 		props.moveCard(
 			dragIndex,
