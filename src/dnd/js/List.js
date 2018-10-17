@@ -7,7 +7,10 @@ import styles from "../css/index.less";
 const cardTarget = {
 	hover(props, monitor, component ) {
 		const { listId, index } = props;
-		console.log(props, monitor.getItem());
+		return {
+      index,
+			listId
+		};
 	}
 }
 

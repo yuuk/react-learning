@@ -48,3 +48,5 @@ class App extends Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
+
+// http://rafaelquintanilha.com/sortable-targets-with-react-dnd/
