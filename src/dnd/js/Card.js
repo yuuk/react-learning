@@ -1,5 +1,4 @@
 import React from "react";
-import { findDOMNode } from 'react-dom';
 import classnames from "classnames";
 import { DragSource, DropTarget } from "react-dnd";
 
@@ -32,7 +31,6 @@ const cardTarget = {
 		const dragListId = monitor.getItem().listId;
 		const hoverListId = props.listId;
 		
-		// 相同元素上拖拽不作处理
 		if (dragId === hoverId) {
 			return;
 		}
@@ -43,13 +41,16 @@ const cardTarget = {
 			dragId,
 			hoverId,
 			dragListId,
-      hoverListId,
+			hoverListId,
 		);
-		// Note: we're mutating the monitor item here!
-		// Generally it's better to avoid mutations,
-		// but it's good here for the sake of performance
-		// to avoid expensive index searches.
-		monitor.getItem().index = hoverIndex;
+
+		if (hoverListId === dragListId) { 
+			// Note: we're mutating the monitor item here!
+			// Generally it's better to avoid mutations,
+			// but it's good here for the sake of performance
+			// to avoid expensive index searches.
+			monitor.getItem().index = hoverIndex;
+		}
 	}
 };
 

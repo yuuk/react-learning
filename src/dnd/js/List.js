@@ -1,16 +1,13 @@
 import React from "react";
 import classnames from "classnames";
 import { DropTarget } from "react-dnd";
+import update from 'immutability-helper';
 import Card from "./Card";
 import styles from "../css/index.less";
 
 const cardTarget = {
 	hover(props, monitor, component ) {
-		const { listId, index } = props;
-		return {
-      index,
-			listId
-		};
+	
 	}
 }
 
@@ -34,23 +31,22 @@ class List extends React.Component {
     hoverListId,
 	) => {
 		const { data } = this.state;
-		const { allData } = this.props;
 
-		const dragCard = allData.find(card => card.id === dragId);
-		const hoverCard = allData.find(card => card.id === hoverId);
+		const dragCard = data.find(card => card.id === dragId);
+		const hoverCard = data.find(card => card.id === hoverId);
 
-		if (hoverListId === dragListId) { 
-			console.log('同容器拖拽');
-
-			const newData = [...data];
-			newData.splice(hoverIndex, 1, dragCard);
-			newData.splice(dragIndex, 1, hoverCard);
-
-			this.setState({
-				data: [...newData],
-			});
+		if (dragListId === hoverListId) { 
+			console.log('same container');
+			this.setState(update(this.state, {
+				data: {
+					$splice: [
+						[dragIndex, 1],
+						[hoverIndex, 0, dragCard]
+					]
+				}
+			}));
 		} else {
-			console.log('跨容器拖拽');
+			console.log('cross container');
 		}
   }
 
