@@ -1,6 +1,8 @@
 ## My react learning stuffs
 * todomvc
-* resume
+* tab
+* upload
+* react-dnd sample
 * todomvc with redux
 * and more...
 
