@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul, li {
+    list-style: none;
+}
+
+:global {
+    #root {
+        padding: 15px;
+    }
+}
+
+.container {
+    box-sizing: content-box;
+    width: 300px;
+    margin: auto;
+    box-shadow: 0px 2px 12px 0px rgba(56,56,56,0.2);
+    border-radius: 2px;
+    border: 1px solid #d3d3d3;
+   
+}
+
+.header {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #eee;
+    span {
+        padding: 0 5px;
+    }
+    button {
+        border: 0;
+        background-color: #fff;
+        outline: none;
+        padding: 0 5px;
+        cursor: pointer;
+        font-family: monospace;
+        font-weight: 700;
+    }
+}
+
+
+.weeks {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #3C414B;
+    li {
+        width: 14.285714285714286%;
+        text-align: center;
+    }
+}
+
+.days {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    padding: 10px;
+   
+}
+
+.dayItem {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        margin: auto;
+        border-radius: 100%;
+        color: #3C414B;
+    }
+    &:hover {
+        span {
+            background-color: #F3FCFB;
+        }
+    }
+   }
+
+.isToday {
+    span {
+        color: #3AC3AE;
+    }
+}
+
+.isSelected {
+    span {
+        background-color: #3AC3AE!important;
+        color: #fff;
+    }
+}
+
+.disabled {
+    opacity: 0.3;
+}
+
+.footer {
+    border-top: 1px solid #eee;
+    font-size: 14px;
+    span {
+        padding: 8px 0;
+        border-radius: 5px;
+        display: block;
+        text-align: center;
+        cursor: pointer;
+        &:hover {
+            background-color: #F3FCFB;
+        }
+    }
+}
