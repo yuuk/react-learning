@@ -10,38 +10,38 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 获取入口文件
 const getEntries = () => {
-    let obj = {};
-    glob.sync('./src/*/js/index.js').forEach(file => {
-        let filename =  file.split('/')[2];
-        obj[filename] = file;
-    });
-    return obj;
+	let obj = {};
+	glob.sync('./src/*/js/index.js').forEach(file => {
+		let filename = file.split('/')[2];
+		obj[filename] = file;
+	});
+	return obj;
 }
 
 // 生成html模板
 const generatorHtmlWebPackPlugin = () => {
-    let html = [];
-    glob.sync('src/*/index.html').forEach(entry => {
-        let filename =  entry.split('/')[1];
-        let instance = new HtmlWebPackPlugin({
-            template: entry, // 指定模板文件
-            filename: `${filename}/index.html`, // 输出的文件名
-            hash: false, // 如果 【output】 选项中指定了hash，此处可配置成false
-            inject: true,
-            chunks: [filename]
-        });
-        html.push(instance);
-    });
-    return html;
+	let html = [];
+	glob.sync('src/*/index.html').forEach(entry => {
+		let filename = entry.split('/')[1];
+		let instance = new HtmlWebPackPlugin({
+			template: entry, // 指定模板文件
+			filename: `${filename}/index.html`, // 输出的文件名
+			hash: false, // 如果 【output】 选项中指定了hash，此处可配置成false
+			inject: true,
+			chunks: [filename]
+		});
+		html.push(instance);
+	});
+	return html;
 }
 
 const webpackPlugins = [
-    // 提取css成文件
-    new ExtractTextPlugin({
-        filename: '[name]/css/index.[hash].css',
-        allChunks: true
-    }),
-    new CleanWebpackPlugin(['./dist/']) // 打包文件前清除dist目录
+	// 提取css成文件
+	new ExtractTextPlugin({
+		filename: '[name]/css/index.[hash].css',
+		allChunks: true
+	}),
+	new CleanWebpackPlugin(['./dist/']) // 打包文件前清除dist目录
 ].concat(generatorHtmlWebPackPlugin());
 
 const config = (options) => {
@@ -69,7 +69,8 @@ const config = (options) => {
                         loader: "css-loader",
                         options: {
                             modules: true,
-                            minimize: true
+                            minimize: true,
+                            localIdentName: '[name]__[local]--[hash:base64:5]'
                         }
                     }, {
                         loader: "less-loader",
@@ -134,5 +135,5 @@ const config = (options) => {
 }
 
 module.exports = (env, options) => {
-    return config(options);
+	return config(options);
 }

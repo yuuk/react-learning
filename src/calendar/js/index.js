@@ -78,7 +78,7 @@ class App extends Component {
 
   gotoNextMonth = () => {
     let { year, month } = this.state;
-    if (month > 11) {
+    if (month >= 12) {
       year++;
       month = 1
     } else {
@@ -103,7 +103,7 @@ class App extends Component {
     while (--day > 0) {
       const prevDate = prevMonthDaysArr.pop();
       let prevYear = year;
-      let prevMonth = month-1;
+      let prevMonth = month - 1;
       if (prevMonth < 1) {
         prevMonth = 12;
         prevYear--;
@@ -132,8 +132,8 @@ class App extends Component {
     for (let i = 0;i<gapDays;i++) {
       const nextDate = nextMonthDaysArr.shift();
       let nextYear = year;
-      let nextMonth = month+1;
-      if (nextMonth >12) {
+      let nextMonth = month + 1;
+      if (nextMonth > 12) {
         nextMonth = 1;
         nextYear++;
       }

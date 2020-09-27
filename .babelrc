@@ -1,9 +1,13 @@
 {
 	"presets": ["react", [ "env", {
-		"targets": {
-			"browsers": [ "last 2 Chrome versions" ]
-		},
-		"modules": false
-		}]],
-		"plugins": ["transform-decorators-legacy","transform-class-properties"]
+	"targets": {
+		"browsers": [ "last 2 Chrome versions" ]
+	},
+	"modules": false
+	}]],
+	"plugins": [
+		"transform-decorators-legacy",
+		"transform-class-properties",
+		"transform-object-rest-spread"
+	]
 }

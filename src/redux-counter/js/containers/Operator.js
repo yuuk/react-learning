@@ -9,7 +9,17 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(actions, dispatch);
+    return {
+        increment() {
+            dispatch(actions.increment(1))
+        },
+        decrement() {
+            dispatch(actions.decrement(2))
+        },
+        asyncIncrement() {
+            dispatch(actions.asyncIncrement(3))
+        }
+    }
 }
 
 const myOperator = connect(
