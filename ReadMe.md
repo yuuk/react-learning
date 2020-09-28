@@ -1,13 +1,16 @@
 ## My react learning stuffs
-* todomvc
-* tab
-* upload
-* react-dnd sample
-* todomvc with redux
-* and more...
+
+- todomvc
+- tab
+- upload
+- react-dnd sample
+- todomvc with redux
+- calendar
+- and more...
 
 ## clone
-``` bash
+
+```bash
 https://github.com/yuuk/react-learning.git
 
 cd react-learning
@@ -15,12 +18,13 @@ cd react-learning
 
 ## install and useage
 
-``` javascript
+```javascript
 npm install
 
 npm run watch
 ```
-## 
+
+##
 
 ## broswer
 
